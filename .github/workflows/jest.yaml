@@ -1,0 +1,24 @@
+name: Running jest tests
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps: # In order to get a copy of our repository's code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Setting up node js environment
+      - name: Setting up node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Installing dependencies
+        run: npm ci
+
+      - name: Running test case
+        run: npm test
