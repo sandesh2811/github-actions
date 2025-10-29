@@ -11,14 +11,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setting up pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+          run_install: false
+
       # Setting up node js environment
       - name: Setting up node.js
         uses: actions/setup-node@v4
         with:
           node-version: "22"
+          cache: "pnpm"
 
       - name: Installing dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Running test case
-        run: npm test
+        run: pnpm test
