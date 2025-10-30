@@ -1,13 +1,20 @@
-name: Running jest tests
+name: matrix-workflow
 
 on:
   workflow_dispatch:
 
 jobs:
-  test:
+  matrix-job:
+    name: "Same types of job using matrix"
     runs-on: ubuntu-latest
+    strategy:
+      # We want only one job to run at a time to complete fulfill the flow of nodejs version 20 --> 21 --> 22
+      max-parallel: 1
+      fail-fast: true
+      matrix:
+        node: [20, 21, 22]
 
-    steps: # In order to get a copy of our repository's code
+    steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -17,12 +24,11 @@ jobs:
           version: 10
           run_install: false
 
-      # Setting up node js environment
-      - name: Setting up node.js
+      - name: Setting up ${{matrix.node}}
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
-          # Built in cache
+          # Using 3 different version of our application using matrix
+          node-version: ${{matrix.node}}
           cache: "pnpm"
 
       - name: Installing dependencies
