@@ -1,0 +1,10 @@
+name: "main-workflow"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  call-tests:
+    uses: ./.github/workflows/reusable-test.yaml
+    with:
+      node_version: "22"
